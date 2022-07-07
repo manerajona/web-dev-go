@@ -1,12 +1,13 @@
 package main
 
 import (
-	"html/template"
-	"net/http"
-	"time"
-
+	"fmt"
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
+	"html/template"
+	"io/ioutil"
+	"net/http"
+	"time"
 )
 
 type user struct {
@@ -39,7 +40,9 @@ func main() {
 	http.HandleFunc("/bar", bar)
 	http.HandleFunc("/signup", signup)
 	http.HandleFunc("/login", login)
-	http.HandleFunc("/logout", authorized(logout))
+	http.HandleFunc("/logout", logout)
+	// added new route
+	http.HandleFunc("/checkUserName", checkUserName)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.ListenAndServe(":8080", nil)
 }
@@ -145,6 +148,10 @@ func login(w http.ResponseWriter, req *http.Request) {
 }
 
 func logout(w http.ResponseWriter, req *http.Request) {
+	if !alreadyLoggedIn(w, req) {
+		http.Redirect(w, req, "/", http.StatusSeeOther)
+		return
+	}
 	c, _ := req.Cookie("session")
 	// delete the session
 	delete(dbSessions, c.Value)
@@ -164,13 +171,20 @@ func logout(w http.ResponseWriter, req *http.Request) {
 	http.Redirect(w, req, "/login", http.StatusSeeOther)
 }
 
-func authorized(h http.HandlerFunc) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !alreadyLoggedIn(w, r) {
-			//http.Error(w, "not logged in", http.StatusUnauthorized)
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return // don't call original handler
-		}
-		h.ServeHTTP(w, r)
-	})
+func checkUserName(w http.ResponseWriter, req *http.Request) {
+	sampleUsers := map[string]bool{
+		"test@example.com": true,
+		"jame@bond.com":    true,
+		"moneyp@uk.gov":    true,
+	}
+
+	bs, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	sbs := string(bs)
+	fmt.Println("USERNAME: ", sbs)
+
+	fmt.Fprint(w, sampleUsers[sbs])
 }

@@ -15,8 +15,8 @@ type user struct {
 }
 
 var tpl *template.Template
-var dbUsers = map[string]user{}      // user ID, user
-var dbSessions = map[string]string{} // session ID, user ID
+var dbUsers = map[string]user{}      // user id, user
+var dbSessions = map[string]string{} // session id, user id
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
@@ -61,7 +61,7 @@ func signup(w http.ResponseWriter, req *http.Request) {
 
 		// username taken?
 		if _, ok := dbUsers[un]; ok {
-			http.Error(w, "Username already taken", http.StatusForbidden)
+			http.Error(w, "username already taken", http.StatusForbidden)
 			return
 		}
 

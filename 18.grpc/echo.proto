@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package echo;
+
+option go_package = "github.com/manerajona/web-dev-go/18.grpc/echo";
+
+message EchoRequest {
+    string message = 1;
+}
+
+message EchoResponse {
+    string response = 1;
+}
+
+service EchoService {
+    rpc Echo (EchoRequest) returns (EchoResponse) {}
+}

@@ -42,7 +42,7 @@ func (uc UserController) CreateUser(w http.ResponseWriter, r *http.Request, _ ht
 
 	json.NewDecoder(r.Body).Decode(&u)
 
-	// create bson ID
+	// create bson id
 	u.Id = bson.NewObjectId()
 
 	// store the user in mongodb

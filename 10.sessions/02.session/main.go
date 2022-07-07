@@ -14,8 +14,8 @@ type user struct {
 }
 
 var tpl *template.Template
-var dbUsers = map[string]user{}      // user ID, user
-var dbSessions = map[string]string{} // session ID, user ID
+var dbUsers = map[string]user{}      // user id, user
+var dbSessions = map[string]string{} // session id, user id
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))

@@ -111,7 +111,7 @@ working example. Generally it's easiest to avoid nullable fields altogether if y
 ## initialize a new sql.DB
 
 ```
-db, err := sql.Open("postgres", "postgres://bond:password@localhost/bookstore?sslmode=disable")
+db, err := sql.Open("postgres", "postgres://user:password@localhost/bookstore?sslmode=disable")
 	if err != nil {
 		panic(err)
 	}

@@ -14,7 +14,6 @@ var Books *mgo.Collection
 
 func init() {
 	// get a mongo sessions
-	//s, err := mgo.Dial("mongodb://bond:moneypenny007@localhost/bookstore")
 	s, err := mgo.Dial("mongodb://localhost/bookstore")
 	if err != nil {
 		panic(err)
